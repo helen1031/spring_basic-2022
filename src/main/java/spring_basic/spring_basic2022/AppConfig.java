@@ -1,5 +1,6 @@
 package spring_basic.spring_basic2022;
 
+import spring_basic.spring_basic2022.discount.DiscountPolicy;
 import spring_basic.spring_basic2022.discount.FixDiscountPolicy;
 import spring_basic.spring_basic2022.discount.RateDiscountPolicy;
 import spring_basic.spring_basic2022.member.MemberService;
@@ -11,10 +12,18 @@ import spring_basic.spring_basic2022.order.OrderServiceImpl;
 public class AppConfig {
 
     public MemberService memberService() {
-        return new MemberServiceImpl(new MemoryMemberRepository());
+        return new MemberServiceImpl(memberRepository());
+    }
+
+    private static MemoryMemberRepository memberRepository() {
+        return new MemoryMemberRepository();
     }
 
     public OrderService orderService() {
-        return new OrderServiceImpl(new MemoryMemberRepository(), new FixDiscountPolicy());
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
+    }
+
+    public DiscountPolicy discountPolicy() {
+        return new FixDiscountPolicy();
     }
 }
